@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:scrapit/pages/authentication_page/widgets/custom_text_field.dart';
 
 import '../bloc/authentication_bloc.dart';
@@ -32,6 +33,13 @@ class AuthenticationPage extends StatelessWidget {
                     CustomAuthenticationTextField(
                         hintText: "name",
                         controller: bloc.nameTextEditingController),
+                    FilledButton(
+                      onPressed: () {
+                        bloc.add(GetUserCredEvent(
+                            client: GraphQLProvider.of(context).value));
+                      },
+                      child: const Text("click to get the users"),
+                    )
                   ],
                 )
               ]),
