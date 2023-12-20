@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "319490436021",
+    "project_id": "scrapit-99d49",
+    "storage_bucket": "scrapit-99d49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319490436021:android:c6b50c829945849a4607fc",
+        "android_client_info": {
+          "package_name": "com.example.scrapit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319490436021-ebmi4m7ja8v5dob7osdaslfh0us4dl1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjlhvPDZPTiP6C4EiCnttX-nYICf4v8ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319490436021-ebmi4m7ja8v5dob7osdaslfh0us4dl1u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
