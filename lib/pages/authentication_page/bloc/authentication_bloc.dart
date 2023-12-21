@@ -14,24 +14,53 @@ class AuthenticationBloc
   AuthenticationBloc() : super(AuthenticationInitial()) {
     User? user;
     UserCred? userCred;
+    FirebaseAuth auth = FirebaseAuth.instance;
 
     on<AuthenticationEvent>((event, emit) {});
 
     on<GoogleSignInInitiatedEvent>((event, emit) {
       //the configuration for setting up sign in using google functionality
 
-      emit(AuthenticationRequestedState());
-
       final FirebaseAuth auth = FirebaseAuth.instance;
 
       Future<void> signup() async {
         final GoogleSignIn googleSignIn = GoogleSignIn();
+
         final GoogleSignInAccount? googleSignInAccount =
-            await googleSignIn.signIn();
-        //checks weather the signup using google was successful or not
+            await googleSignIn.signIn().catchError((e) {
+          emit(AuthenticationErrorState(
+              error: "signin failed ue to ${e.toString()}"));
+        });
         if (googleSignInAccount != null) {
-          final GoogleSignInAuthentication googleSignInAuthentication =
+          GoogleSignInAuthentication authentication =
               await googleSignInAccount.authentication;
+          final AuthCredential credential = GoogleAuthProvider.credential(
+              accessToken: authentication.accessToken,
+              idToken: authentication.idToken);
+          await auth.signInWithCredential(credential);
+        } else {
+          emit(AuthenticationErrorState(
+              error: "Authentication error due to no google signin account"));
+        }
+      }
+
+      signup();
+      if (auth.currentUser != null) {
+        emit(AuthenticationSuccessfulState());
+      }
+    });
+  }
+}
+
+
+/* if (googleSignInAccount != null) {
+          final GoogleSignInAuthentication googleSignInAuthentication =
+              await googleSignInAccount.authentication
+                  .catchError((authenticationError) {
+            emit(AuthenticationErrorState(
+                error:
+                    "Authentication error caused and the error was ${authenticationError.toString()}"));
+          });
           final AuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
             idToken: googleSignInAuthentication.idToken,
@@ -42,18 +71,6 @@ class AuthenticationBloc
               id: user?.uid, name: user?.displayName, email: user?.email);
           log(userCred!.name.toString());
         } else {
-          emit(AuthenticationErrorState(error: "Error while trying to log in"));
-        }
-      }
-
-      signup();
-
-      if (user != null) {
-        emit(AuthenticationSuccessfulState());
-      } else {
-        emit(AuthenticationErrorState(
-            error: "Authentication error try after some time"));
-      }
-    });
-  }
-}
+          emit(AuthenticationErrorState(
+              error: "Google Signin error, please try again"));
+        } */

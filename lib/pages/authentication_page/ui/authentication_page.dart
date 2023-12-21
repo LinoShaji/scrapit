@@ -10,24 +10,28 @@ class AuthenticationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.watch<AuthenticationBloc>();
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is AuthenticationRequestedState) {
           return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
-
         if (state is AuthenticationSuccessfulState) {
           return const Scaffold(
+            body: Text("Authentication successful state"),
+          );
+        }
+        if (state is AuthenticationErrorState) {
+          return Scaffold(
             body: Center(
-              child: Text("Successfuly authenticated"),
+              child: Text(
+                  "Authentication is error and the error was ${state.error}"),
             ),
           );
         }
-
         return Scaffold(
           body: SafeArea(
             child: Padding(
