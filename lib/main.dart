@@ -1,13 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:scrapit/color_scheme/material3/color_schemes.g.dart';
+import 'package:scrapit/firebase_options.dart';
 import 'package:scrapit/pages/authentication_page/bloc/authentication_bloc.dart';
 import 'package:scrapit/pages/authentication_page/ui/authentication_page.dart';
 
 void main() async {
-  await dotenv.load();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

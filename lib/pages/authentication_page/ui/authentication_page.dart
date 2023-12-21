@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:scrapit/pages/authentication_page/widgets/custom_text_field.dart';
 
 import '../bloc/authentication_bloc.dart';
+import '../widgets/logo.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -13,36 +12,42 @@ class AuthenticationPage extends StatelessWidget {
     final bloc = context.watch<AuthenticationBloc>();
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
+        if (state is AuthenticationRequestedState) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (state is AuthenticationSuccessfulState) {
+          return const Scaffold(
+            body: Center(
+              child: Text("Successfuly authenticated"),
+            ),
+          );
+        }
+
         return Scaffold(
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Column(children: [
-                Flexible(
-                  child: Text(
-                    "Enter your details and complete the authentication",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(height: 02),
+                  const Center(
+                    child: Logo(),
                   ),
-                ),
-                Flexible(child: SizedBox(height: 250)),
-                Column(
-                  children: [
-                    CustomAuthenticationTextField(
-                        hintText: "name",
-                        controller: bloc.nameTextEditingController),
-                    FilledButton(
-                      onPressed: () {
-                        bloc.add(GetUserCredEvent(
-                            client: GraphQLProvider.of(context).value));
-                      },
-                      child: const Text("click to get the users"),
-                    )
-                  ],
-                )
-              ]),
+                  FilledButton(
+                    onPressed: () {
+                      bloc.add(GoogleSignInInitiatedEvent());
+                    },
+                    child: const Text("Signin using google"),
+                  )
+                ],
+              ),
             ),
           ),
         );
