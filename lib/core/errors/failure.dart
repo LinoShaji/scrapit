@@ -19,6 +19,10 @@ class AuthenticationFailure extends Failure {
   const AuthenticationFailure({super.message});
 }
 
+class SignOutFailure extends Failure {
+  const SignOutFailure({super.message});
+}
+
 class GoogleSignInFailure extends Failure {
   const GoogleSignInFailure({super.message});
 }

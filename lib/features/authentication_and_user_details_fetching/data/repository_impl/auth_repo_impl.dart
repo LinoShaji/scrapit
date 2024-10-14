@@ -5,9 +5,9 @@ import 'package:scrapit/features/authentication_and_user_details_fetching/data/d
 import 'package:scrapit/features/authentication_and_user_details_fetching/domain/repositories/auth_repositories.dart';
 
 class AuthRepoImpl implements AuthRepository {
-  final FirebaseAuthDataSource dataSource;
-  AuthRepoImpl(this.dataSource);
 
+  final dataSource = FirebaseAuthDataSource();
+  
   @override
   Future<Either<UserCredential, Failure>> signinWithGoogle() async {
     try {
@@ -16,6 +16,19 @@ class AuthRepoImpl implements AuthRepository {
     } catch (error) {
       return Right(
         GoogleSignInFailure(
+          message: error.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<Either<bool, Failure>> userSignOut() async {
+    try {
+      dataSource.userSignOut();
+      return left(true);
+    } catch (error) {
+      return Right(
+        SignOutFailure(
           message: error.toString(),
         ),
       );

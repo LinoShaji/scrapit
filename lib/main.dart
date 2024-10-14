@@ -12,16 +12,22 @@ class Quest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'quest', home: AuthenticationPage());
+    return const MaterialApp(
+      title: 'quest',
+      home: Redirect(),
+    );
   }
 }
 
-class Crink extends StatelessWidget {
-  const Crink({super.key});
+class  Redirect extends StatelessWidget {
+  const Redirect ({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [], child: const AuthenticationPage());
+    return MultiBlocProvider(
+      providers: setupblocProviders(),
+      child: const AuthenticationPage(),
+    );
   }
 }
 
